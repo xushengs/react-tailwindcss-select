@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { twMerge } from "tailwind-merge";
 
 import { COLORS, DEFAULT_THEME, THEME_DATA } from "../constants";
 import useOnClickOutside from "../hooks/use-onclick-outside";
@@ -146,8 +145,8 @@ const Select: React.FC<SelectProps> = ({
         const baseClass =
             "flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none";
         const defaultClass = `${baseClass} ${isDisabled
-                ? "bg-gray-200"
-                : `bg-white hover:border-gray-400 ${borderFocus} focus:ring ${ringColor}`
+            ? "bg-gray-200"
+            : `bg-white hover:border-gray-400 ${borderFocus} focus:ring ${ringColor}`
             }`;
 
         return classNames && classNames.menuButton
@@ -183,12 +182,7 @@ const Select: React.FC<SelectProps> = ({
                     onClick={toggle}
                     className={getSelectClass()}
                 >
-                    <div
-                        className={twMerge(
-                            "grow pl-2.5 py-2 pr-2 flex flex-wrap gap-1",
-                            !isMultiple ? "truncate" : ""
-                        )}
-                    >
+                    <div className="grow pl-2.5 py-2 pr-2 flex flex-wrap gap-1">
                         {!isMultiple ? (
                             <p className="truncate cursor-default select-none">
                                 {value && !Array.isArray(value) ? value.label : placeholder}
@@ -204,7 +198,7 @@ const Select: React.FC<SelectProps> = ({
                                                 className={
                                                     classNames?.tagItemText
                                                         ? classNames.tagItemText
-                                                        : "text-gray-600 cursor-default select-none"
+                                                        : "text-gray-600 truncate cursor-default select-none"
                                                 }
                                             >
                                                 {item.label}
