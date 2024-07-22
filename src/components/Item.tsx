@@ -12,7 +12,8 @@ interface ItemProps {
 }
 
 const Item: React.FC<ItemProps> = ({ item, primaryColor }) => {
-    const { classNames, value, handleValueChange, formatOptionLabel } = useSelectContext();
+    const { classNames, value, handleValueChange, handlePressEscape, formatOptionLabel } =
+        useSelectContext();
 
     const isSelected = useMemo(() => {
         return value !== null && !Array.isArray(value) && value.value === item.value;
@@ -65,8 +66,10 @@ const Item: React.FC<ItemProps> = ({ item, primaryColor }) => {
                         <li
                             tabIndex={0}
                             onKeyDown={(e: React.KeyboardEvent<HTMLLIElement>) => {
-                                if (e.key === ' ' || e.key === 'Enter') {
-                                    handleValueChange(item)
+                                if (e.key === " " || e.key === "Enter") {
+                                    handleValueChange(item);
+                                } else if (e.key === "Escape") {
+                                    handlePressEscape();
                                 }
                             }}
                             aria-selected={isSelected}

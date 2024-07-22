@@ -221,6 +221,18 @@ const Home = () => {
                             </div>
                         ) : (
                             <SelectContainer>
+                                <div className="my-4">
+                                    <div className="flex rounded-md bg-white shadow-sm border border-gray-300 transition-all duration-300 hover:border-indigo-500 focus-within:outline-none focus-within:border-indigo-500 focus-within:ring focus-within:ring-indigo-500/20">
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            id="name"
+                                            className="block flex-1 rounded-md border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:outline-0 focus:ring-0 sm:text-sm sm:leading-6"
+                                            placeholder="Name"
+                                        />
+                                    </div>
+                                </div>
+
                                 <Select
                                     /*classNames={{
                                         menuButton: (state) => "flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20",

@@ -33,6 +33,7 @@ const Select: React.FC<SelectProps> = ({
     const [list, setList] = useState<ListOption>(options);
     const [inputValue, setInputValue] = useState<string>("");
     const ref = useRef<HTMLDivElement>(null);
+    const focusRef = useRef<HTMLDivElement>(null);
     const searchBoxRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -74,23 +75,37 @@ const Select: React.FC<SelectProps> = ({
         }
     }, [isDisabled, open]);
 
-    const closeDropDown = useCallback(() => {
-        if (open) setOpen(false);
-    }, [open]);
+    const closeDropDown = () => {
+        setOpen(false);
+    };
 
     useOnClickOutside(ref, () => {
         closeDropDown();
     });
 
     const onPressEnterOrSpace = useCallback(
-        (e: React.KeyboardEvent<HTMLDivElement>) => {
+        (e: React.KeyboardEvent<HTMLElement>) => {
             e.preventDefault();
             if ((e.code === "Enter" || e.code === "Space") && !isDisabled) {
                 toggle();
+            } else if (e.code === "Escape") {
+                handlePressEscape(e);
+            } else if (e.code === "Tab") {
+                if (document.activeElement === focusRef.current) {
+                    focusRef.current?.blur();
+                }
             }
+            return true;
         },
         [isDisabled, toggle]
     );
+
+    const handlePressEscape = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
+        e.preventDefault();
+        focusRef.current?.focus();
+        closeDropDown();
+        return false;
+    }, []);
 
     const handleValueChange = useCallback(
         (selected: Option) => {
@@ -144,10 +159,11 @@ const Select: React.FC<SelectProps> = ({
         }
         const baseClass =
             "flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none";
-        const defaultClass = `${baseClass} ${isDisabled
-            ? "bg-gray-200"
-            : `bg-white hover:border-gray-400 ${borderFocus} focus:ring ${ringColor}`
-            }`;
+        const defaultClass = `${baseClass} ${
+            isDisabled
+                ? "bg-gray-200"
+                : `bg-white hover:border-gray-400 ${borderFocus} focus:ring ${ringColor}`
+        }`;
 
         return classNames && classNames.menuButton
             ? classNames.menuButton({ isDisabled })
@@ -174,9 +190,12 @@ const Select: React.FC<SelectProps> = ({
             }}
             value={value}
             handleValueChange={handleValueChange}
+            handlePressEscape={handlePressEscape}
         >
             <div className="relative w-full" ref={ref}>
                 <div
+                    tabIndex={0}
+                    ref={focusRef}
                     aria-expanded={open}
                     onKeyDown={onPressEnterOrSpace}
                     onClick={toggle}
@@ -254,8 +273,9 @@ const Select: React.FC<SelectProps> = ({
 
                         <div className="px-1.5">
                             <ChevronIcon
-                                className={`transition duration-300 w-6 h-6 p-0.5${open ? " transform rotate-90 text-gray-500" : " text-gray-300"
-                                    }`}
+                                className={`transition duration-300 w-6 h-6 p-0.5${
+                                    open ? " transform rotate-90 text-gray-500" : " text-gray-300"
+                                }`}
                             />
                         </div>
                     </div>

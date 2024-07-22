@@ -14,7 +14,14 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
     { placeholder = "", value = "", onChange, name = "" },
     ref
 ) {
-    const { classNames } = useContext(SelectContext);
+    const { classNames, handlePressEscape } = useContext(SelectContext);
+
+    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Escape") {
+            handlePressEscape();
+        }
+    };
+
     return (
         <div
             className={
@@ -40,6 +47,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
                 type="text"
                 placeholder={placeholder}
                 value={value}
+                onKeyDown={onKeyDown}
                 onChange={onChange}
                 name={name}
             />

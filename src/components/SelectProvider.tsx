@@ -5,6 +5,7 @@ import { ClassNames, GroupOption, Option } from "./type";
 interface Store {
     value: Option | Option[] | null;
     handleValueChange: (selected: Option) => void;
+    handlePressEscape: (e: React.KeyboardEvent<HTMLElement>) => void;
     formatGroupLabel: ((data: GroupOption) => JSX.Element) | null;
     formatOptionLabel: ((data: Option) => JSX.Element) | null;
     classNames?: ClassNames;
@@ -13,6 +14,7 @@ interface Store {
 interface Props {
     value: Option | Option[] | null;
     handleValueChange: (selected: Option) => void;
+    handlePressEscape: (e: React.KeyboardEvent<HTMLElement>) => void;
     children: JSX.Element;
     otherData: {
         formatGroupLabel: ((data: GroupOption) => JSX.Element) | null;
@@ -26,6 +28,9 @@ export const SelectContext = createContext<Store>({
     handleValueChange: selected => {
         console.log("selected:", selected);
     },
+    handlePressEscape: (e: React.KeyboardEvent<HTMLElement>) => {
+        console.log("Escape key pressed");
+    },
     formatGroupLabel: null,
     formatOptionLabel: null,
     classNames: undefined
@@ -35,11 +40,18 @@ export const useSelectContext = (): Store => {
     return useContext(SelectContext);
 };
 
-const SelectProvider: React.FC<Props> = ({ value, handleValueChange, otherData, children }) => {
+const SelectProvider: React.FC<Props> = ({
+    value,
+    handleValueChange,
+    handlePressEscape,
+    otherData,
+    children
+}) => {
     const store = useMemo(() => {
         return {
             value,
             handleValueChange,
+            handlePressEscape,
             formatGroupLabel:
                 otherData && typeof otherData.formatGroupLabel === "function"
                     ? otherData.formatGroupLabel
@@ -50,7 +62,7 @@ const SelectProvider: React.FC<Props> = ({ value, handleValueChange, otherData, 
                     : null,
             classNames: otherData?.classNames || undefined
         };
-    }, [handleValueChange, otherData, value]);
+    }, [handleValueChange, handlePressEscape, otherData, value]);
 
     return <SelectContext.Provider value={store}>{children}</SelectContext.Provider>;
 };
