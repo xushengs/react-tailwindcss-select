@@ -85,16 +85,14 @@ const Select: React.FC<SelectProps> = ({
 
     const onPressEnterOrSpace = useCallback(
         (e: React.KeyboardEvent<HTMLElement>) => {
-            e.preventDefault();
             if ((e.code === "Enter" || e.code === "Space") && !isDisabled) {
+                e.preventDefault();
                 toggle();
             } else if (e.code === "Escape") {
+                e.preventDefault();
                 handlePressEscape(e);
-            } else if (e.code === "Tab") {
-                if (document.activeElement === focusRef.current) {
-                    focusRef.current?.blur();
-                }
             }
+
             return true;
         },
         [isDisabled, toggle]

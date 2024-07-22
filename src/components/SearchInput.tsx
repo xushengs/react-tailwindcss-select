@@ -18,7 +18,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
 
     const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Escape") {
-            handlePressEscape();
+            handlePressEscape(e);
         }
     };
 

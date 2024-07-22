@@ -69,7 +69,7 @@ const Item: React.FC<ItemProps> = ({ item, primaryColor }) => {
                                 if (e.key === " " || e.key === "Enter") {
                                     handleValueChange(item);
                                 } else if (e.key === "Escape") {
-                                    handlePressEscape();
+                                    handlePressEscape(e);
                                 }
                             }}
                             aria-selected={isSelected}
